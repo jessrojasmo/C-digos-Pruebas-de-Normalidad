@@ -1,3 +1,4 @@
+#---- Test de Jarque-Bera----
 Jarque.prueba<-function(muestra,max.iter,alfa){
       library(VGAM)
       library(tseries)

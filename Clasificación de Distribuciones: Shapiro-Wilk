@@ -1,5 +1,4 @@
-# Prueba de Shapiro-Wilk
-
+#----Test de Shapiro-Wilk
 SW.prueba<-function(muestra,max.iter,alfa){
 library(VGAM)
 #Se crea una matriz para cada una de las 11 distribuciones

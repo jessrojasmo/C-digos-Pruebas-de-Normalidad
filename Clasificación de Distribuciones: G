@@ -1,0 +1,158 @@
+G.prueba<-function(muestra,max.iter,alfa){
+      library(kableExtra)
+      library(knitr)
+      library(DescTools)
+      library(BoutrosLab.plotting.general)
+      library(vcd)
+      library(RVAideMemoire)#librería distribuciones
+  
+      
+      #Se crea una matriz para cada una de las 11 distribuciones
+      for(i in 1:11)assign(paste("distr_",i,sep=""),matrix(0,nrow=max.iter,ncol=length(muestra)))
+      
+      #Se crea una hoja de datos donde se guardarán los promedios de la potencia estadística para cada una de las 11 distribuciones
+      potencia<-data.frame(matrix(0,nrow=11,ncol=length(muestra)))
+      
+      #Se asigna los nombres de las columnas de acuerdo a los tamaños de muestra establecidos
+      colnames(potencia)<-muestra
+      
+      #Se asigna de las filas de acuerdo a las distintas distribuciones
+      list<-rep("a",11)
+      for (i in 1:11)list[i]<-paste("dist_",i,sep="")
+      rownames(potencia)<-list
+      
+      #para empezas el proceso de simulación se aplica un bucle para los diferentes tamaños establecidos
+      for(j in 1:length(muestra)){
+         n<-muestra[j]#Valor asignado para el tamaño de muestra conforme a su posición.
+         iteracion<-1 #Se crea esta variable entera para aplicarla como un contador.
+         
+         #Posteriormente empieza un nuevo bucle, desde uno hasta el número de sumulación establecido
+         while(iteracion<=max.iter){
+            
+            #Se aplica la prueba Shapiro-Francia (SF) usando la dist_1 Beta(1,6), guardando su correspondiente p-valor
+            p.value1<-G.test(abs(rbeta(n,1,6)))$p.value
+            
+            #Luego se emplea una condición para signar el valor de 1 en caso de que se acepte la hipotesis nula.
+            if(p.value1<alfa){
+               posicion<-iteracion
+               distr_1[posicion,j]<-1
+            }
+            #Se aplica la prueba Shapiro-Francia (SF) usando la dist_2 Beta(2,2), guardando su correspondiente p-valor
+            p.value2<-G.test(abs(rbeta(n,2,2)))$p.value
+            
+            #Luego se emplea una condición para signar el valor de 1 en caso de que se acepte la hipotesis nula.
+            if(p.value2<alfa){
+               posicion<-iteracion
+               distr_2[posicion,j]<-1
+            }
+            #Se aplica la prueba Shapiro-Francia (SF) usando la dist_3 normal(0,1), guardando su correspondiente p-valor
+            p.value3<-G.test(abs(rnorm(n)))$p.value
+            
+            #Luego se emplea una condición para signar el valor de 1 en caso de que se acepte la hipotesis nula.
+            if(p.value3<alfa){
+               posicion<-iteracion
+               distr_3[posicion,j]<-1
+            }
+            #Se aplica la prueba Shapiro-Francia (SF) usando la dist_4 Cauchy(0,0.5), guardando su correspondiente p-valor
+            p.value4<-G.test(abs(rcauchy(n,0,0.5)))$p.value
+            
+            #Luego se emplea una condición para signar el valor de 1 en caso de que se acepte la hipotesis nula.
+            if(p.value4<alfa){
+               posicion<-iteracion
+               distr_4[posicion,j]<-1
+            }
+            #Se aplica la prueba Shapiro-Francia (SF) usando la dist_5 Logistica(9,3), guardando su correspondiente p-valor
+            p.value5<-G.test(abs(rlogis(n,9,3)))$p.value
+            
+            #Luego se emplea una condición para signar el valor de 1 en caso de que se acepte la hipotesis nula.
+            if(p.value5<alfa){
+               posicion<-iteracion
+               distr_5[posicion,j]<-1
+            }
+            #Se aplica la prueba Shapiro-Francia (SF) usando la dist_6 T-Student(4), guardando su correspondiente p-valor
+            p.value6<-G.test(abs(rt(n,4)))$p.value
+            
+            #Luego se emplea una condición para signar el valor de 1 en caso de que se acepte la hipotesis nula.
+            if(p.value6<alfa){
+               posicion<-iteracion
+               distr_6[posicion,j]<-1
+            }
+            #Se aplica la prueba Shapiro-Francia (SF) usando la dist_7 T-Student(1), guardando su correspondiente p-valor
+            p.value7<-G.test(abs(rt(n,1)))$p.value
+            
+            #Luego se emplea una condición para signar el valor de 1 en caso de que se acepte la hipotesis nula.
+            if(p.value7<alfa){
+               posicion<-iteracion
+               distr_7[posicion,j]<-1
+            }
+            #Se aplica la prueba Shapiro-Francia (SF) usando la dist_8 Gamma(6.5,2.8), guardando su correspondiente p-valor
+            p.value8<-G.test(abs(rgamma(n,6.5,2.8)))$p.value
+            
+            #Luego se emplea una condición para signar el valor de 1 en caso de que se acepte la hipotesis nula.
+            if(p.value8<alfa){
+               posicion<-iteracion
+               distr_8[posicion,j]<-1
+            }
+            #Se aplica la prueba Shapiro-Francia (SF) usando la dist_9 Gamma(2,9), guardando su correspondiente p-valor
+            p.value9<-G.test(abs(rgamma(n,2,9)))$p.value
+            
+            #Luego se emplea una condición para signar el valor de 1 en caso de que se acepte la hipotesis nula.
+            if(p.value9<alfa){
+               posicion<-iteracion
+               distr_9[posicion,j]<-1
+            }
+            #Se aplica la prueba Shapiro-Francia (SF) usando la dist_10 Weibull(1,2), guardando su correspondiente p-valor
+            p.value10<-G.test(abs(rweibull(n,1,2)))$p.value
+            
+            #Luego se emplea una condición para signar el valor de 1 en caso de que se acepte la hipotesis nula.
+            if(p.value10<alfa){
+               posicion<-iteracion
+               distr_10[posicion,j]<-1
+            }
+            #Se aplica la prueba Shapiro-Francia (SF) usando la dist_11 Weibull(4,5), guardando su correspondiente p-valor
+            p.value11<-G.test(abs(rweibull(n,4,5)))$p.value
+            
+            #Luego se emplea una condición para signar el valor de 1 en caso de que se acepte la hipotesis nula.
+            if(p.value11<alfa){
+               posicion<-iteracion
+               distr_11[posicion,j]<-1
+            }
+            
+            iteracion<-iteracion+1
+            
+         }
+         
+         beta1<-sum(distr_1[,j])/length(distr_1[,j]) #Se asigna el promedio de Beta para la distribución Beta(1,6)
+         beta2<-sum(distr_2[,j])/length(distr_2[,j]) #Se asigna el promedio de Beta para la distribución Beta(2,2)   
+         beta3<-sum(distr_3[,j])/length(distr_3[,j]) #Se asigna el promedio de Beta para la distribución Normal(0,1)
+         beta4<-sum(distr_4[,j])/length(distr_4[,j]) #Se asigna el promedio de Beta para la distribución Cauchy(0,0.5)
+         beta5<-sum(distr_5[,j])/length(distr_5[,j]) #Se asigna el promedio de Beta para la distribución Logistica(9,3)
+         beta6<-sum(distr_6[,j])/length(distr_6[,j]) #Se asigna el promedio de Beta para la distribución T-Student(4)
+         beta7<-sum(distr_7[,j])/length(distr_7[,j]) #Se asigna el promedio de Beta para la distribución T-Student(1)
+         beta8<-sum(distr_8[,j])/length(distr_8[,j]) #Se asigna el promedio de Beta para la distribución Gamma(6.5,2.8)
+         beta9<-sum(distr_9[,j])/length(distr_9[,j]) #Se asigna el promedio de Beta para la distribución Gamma(2,9)
+         beta10<-sum(distr_10[,j])/length(distr_10[,j]) #Se asigna el promedio de Beta para la distribución Weibull(1,2)
+         beta11<-sum(distr_11[,j])/length(distr_11[,j]) #Se asigna el promedio de Beta para la distribución Weibull(4,5)
+         
+         potencia[1,j]<-1-beta1 #Se obtiene la potencia estadística para la distibución Beta(1,6)
+         potencia[2,j]<-1-beta2 #Se obtiene la potencia estadística para la distibución Beta(2,2)
+         potencia[3,j]<-1-beta3 #Se obtiene la potencia estadística para la distibución Normal(0,1)
+         potencia[4,j]<-1-beta4 #Se obtiene la potencia estadística para la distibución Cauchy(0,0.5)
+         potencia[5,j]<-1-beta5 #Se obtiene la potencia estadística para la distibución T-Student(4)
+         potencia[6,j]<-1-beta6 #Se obtiene la potencia estadística para la distibución T-Student(1)
+         potencia[7,j]<-1-beta7 #Se obtiene la potencia estadística para la distibución Gamma(6.5,2.8)
+         potencia[8,j]<-1-beta8 #Se obtiene la potencia estadística para la distibución Gamma(2,9)
+         potencia[9,j]<-1-beta9 #Se obtiene la potencia estadística para la distibución Beta(1,6)
+         potencia[10,j]<-1-beta10 #Se obtiene la potencia estadística para la distibución Weibull(1,2)
+         potencia[11,j]<-1-beta11 #Se obtiene la potencia estadística para la distibución Weibull(4,5)
+      }
+      
+      return(potencia)
+      
+   }   
+
+
+muestra=c(10,20,30,50,100,200,500)
+G.prueba(muestra,100000,0.01)
+G.prueba(muestra,100000,0.05)
+G.prueba(muestra,100000,0.10)

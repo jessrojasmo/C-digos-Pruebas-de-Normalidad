@@ -1,0 +1,87 @@
+BHBS.prueba<-function(muestra,max.iter,alfa){
+   library(VGAM)#librería distribuciones
+   library(PoweR)#librería 
+   for(i in 1:11)assign(paste("distr_",i,sep=""),
+                        matrix(0,nrow=max.iter,ncol=length(muestra)))
+   potencia<-data.frame(matrix(0,nrow=11,ncol=length(muestra)))
+   colnames(potencia)<-muestra
+   list<-rep("a",11)
+   for (i in 1:11)list[i]<-paste("dist_",i,sep="")
+   rownames(potencia)<-list
+   for(j in 1:length(muestra)){
+      n<-muestra[j]
+      iteracion<-1
+      while(iteracion<=max.iter){
+         p.value1<-statcompute(stat.index =18, data =rbeta(n,1,6))$pvalue
+         if(p.value1<alfa){
+            posicion<-iteracion
+            distr_1[posicion,j]<-1            }
+         p.value2<-statcompute(stat.index =18, data =rbeta(n,2,2))$pvalue
+         if(p.value2<alfa){
+            posicion<-iteracion
+            distr_2[posicion,j]<-1            }
+         p.value3<-statcompute(stat.index =18, data =rnorm(n))$pvalue
+         if(p.value3<alfa){
+            posicion<-iteracion
+            distr_3[posicion,j]<-1            }
+         p.value4<-statcompute(stat.index =18, data =rcauchy(n,0,0.5))$pvalue
+         if(p.value4<alfa){
+            posicion<-iteracion
+            distr_4[posicion,j]<-1            }
+         p.value5<-statcompute(stat.index =18, data =rlogis(n,9,3))$pvalue
+         if(p.value5<alfa){
+            posicion<-iteracion
+            distr_5[posicion,j]<-1            }
+         p.value6<-statcompute(stat.index =18, data =rt(n,4))$pvalue
+         if(p.value6<alfa){
+            posicion<-iteracion
+            distr_6[posicion,j]<-1            }
+         p.value7<-statcompute(stat.index =18, data =rt(n,1))$pvalue
+         if(p.value7<alfa){
+            posicion<-iteracion
+            distr_7[posicion,j]<-1            }
+         p.value8<-statcompute(stat.index =18, data =rgamma(n,6.5,2.8))$pvalue
+         if(p.value8<alfa){
+            posicion<-iteracion
+            distr_8[posicion,j]<-1            }
+         p.value9<-statcompute(stat.index =18, data =rgamma(n,2,9))$pvalue
+         if(p.value9<alfa){
+            posicion<-iteracion
+            distr_9[posicion,j]<-1            }
+         p.value10<-statcompute(stat.index =18, data =rweibull(n,1,2))$pvalue
+         if(p.value10<alfa){
+            posicion<-iteracion
+            distr_10[posicion,j]<-1            }
+         p.value11<-statcompute(stat.index =18, data =rweibull(n,4,5))$pvalue
+         if(p.value11<alfa){
+            posicion<-iteracion
+            distr_11[posicion,j]<-1            }
+         iteracion<-iteracion+1         }
+      beta1<-sum(distr_1[,j])/length(distr_1[,j]) 
+      beta2<-sum(distr_2[,j])/length(distr_2[,j])
+      beta3<-sum(distr_3[,j])/length(distr_3[,j]) 
+      beta4<-sum(distr_4[,j])/length(distr_4[,j])
+      beta5<-sum(distr_5[,j])/length(distr_5[,j]) 
+      beta6<-sum(distr_6[,j])/length(distr_6[,j]) 
+      beta7<-sum(distr_7[,j])/length(distr_7[,j]) 
+      beta8<-sum(distr_8[,j])/length(distr_8[,j]) 
+      beta9<-sum(distr_9[,j])/length(distr_9[,j]) 
+      beta10<-sum(distr_10[,j])/length(distr_10[,j]) 
+      beta11<-sum(distr_11[,j])/length(distr_11[,j]) 
+      potencia[1,j]<-1-beta1
+      potencia[2,j]<-1-beta2 
+      potencia[3,j]<-1-beta3 
+      potencia[4,j]<-1-beta4 
+      potencia[5,j]<-1-beta5 
+      potencia[6,j]<-1-beta6 
+      potencia[7,j]<-1-beta7 
+      potencia[8,j]<-1-beta8 
+      potencia[9,j]<-1-beta9 
+      potencia[10,j]<-1-beta10 
+      potencia[11,j]<-1-beta11      }
+   return(potencia)   } 
+
+muestra=c(10,20,30,50,100,200,500)
+max.iter=c(100000)
+alfa=c(0.05,0.01,0.10)
+BHBS.prueba(muestra,max.iter,alfa)

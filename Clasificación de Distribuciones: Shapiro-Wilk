@@ -15,7 +15,7 @@ colnames(potencia)<-muestra
    for (i in 1:11)list[i]<-paste("dist_",i,sep="")
    rownames(potencia)<-list
    
-#para empezas el proceso de simulación se aplica un bucle para los diferentes tamaños establecidos
+# Inicio del proceso de simulación: aplicar un bucle para los diferentes tamaños establecidos
    for(j in 1:length(muestra)){
       n<-muestra[j]#Valor asignado para el tamaño de muestra conforme a su posición.
       iteracion<-1 #Se crea esta variable entera para aplicarla como un contador.

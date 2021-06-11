@@ -1,7 +1,7 @@
 #---- Test de Jarque-Bera Robusto----
 Rjarque.prueba<-function(muestra,max.iter,alfa){
-   library(VGAM)#librería distribuciones
-   library(lawstat)#librería rjb.test
+   library(VGAM)
+   library(lawstat)
    #Se crea una matriz para cada una de las 11 distribuciones
    for(i in 1:11)assign(paste("distr_",i,sep=""),matrix(0,nrow=max.iter,ncol=length(muestra)))
    

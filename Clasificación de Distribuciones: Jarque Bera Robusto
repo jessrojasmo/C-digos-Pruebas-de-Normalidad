@@ -1,3 +1,4 @@
+#---- Test de Jarque-Bera Robusto----
 Rjarque.prueba<-function(muestra,max.iter,alfa){
    library(VGAM)#librería distribuciones
    library(lawstat)#librería rjb.test

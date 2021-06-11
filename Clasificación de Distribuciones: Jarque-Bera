@@ -32,7 +32,7 @@ Jarque.prueba<-function(muestra,max.iter,alfa){
                posicion<-iteracion
                distr_1[posicion,j]<-1
             }
-            #Se aplica la prueba Jarque Bera usando la dist_2 Beta(2,2), guardando su correspondiente p-valor
+           #Se aplica la prueba Jarque Bera usando la dist_2 Beta(2,2), guardando su correspondiente p-valor
             p.value2<-ajb.norm.test(rbeta(n,2,2))$p.value
             
             #Luego se emplea una condición para signar el valor de 1 en caso de que se acepte la hipotesis nula.

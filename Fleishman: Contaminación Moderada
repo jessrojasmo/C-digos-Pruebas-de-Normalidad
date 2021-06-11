@@ -1,0 +1,62 @@
+rechazo_pval <-function(pval.stadic, alpha)
+{ifelse(pval.stadic<alpha, 1, 0)}
+library(nortest)
+library(normtest)
+library(VGAM)
+library(lawstat)
+library(moments)
+library(PoweR)
+library(kableExtra)
+library(knitr)
+library(DescTools)
+library(BoutrosLab.plotting.general)
+library(vcd)
+library(RVAideMemoire)
+power.norm <-function(m =100000, n, alpha, coef.fleishman, semilla =127){
+   old.seed <-.Random.seed
+   set.seed(semilla)
+   rejections <-replicate(m,{
+      x1Control <-rnorm(n)
+      x1 <-(coef.fleishman[1] +(coef.fleishman[2]*x1Control)+
+               (coef.fleishman[3]*x1Control^2) +
+               (coef.fleishman[4]*x1Control^3))    
+      kl.test.pal <-lillie.test(x1)$p.value
+      JBR.test.pval<-rjb.test(x1)$p.value
+      Agostino.test.pval<-agostino.test(x1)$p.value
+      sh.test.pval <-shapiro.test(x1)$p.value
+      Ad.test.pval <-ifelse(n >7, (ad.test(x1))$p.value, 0)
+      bonett.test.pval<-bonett.test(x1)$p.value
+      JB.test.pval <-(ajb.norm.test(x1))$p.value
+      skewness.norm.test.pval<-skewness.norm.test(x1)$p.value
+      kurtosis.norm.test.pval<-kurtosis.norm.test(x1)$p.value
+      chisq.test.pval<-chisq.test(abs(x1))$p.value
+      sf.test.pval<-sf.test(x1)$p.value
+      BM1BM2.test.pval<-statcompute(stat.index =14, data =x1)$pvalue
+      BH.test.pval<-statcompute(stat.index =16, data =x1)$pvalue
+      DH.test.pval<-statcompute(stat.index =8, data =x1)$pvalue
+      BHBS.test.pval<-statcompute(stat.index =18, data =x1)$pvalue
+      G.test.pval<-G.test(abs(x1))$p.value
+      c(rechazo_pval(pval.stadic =kl.test.pal, alpha =alpha),
+        rechazo_pval(pval.stadic =JBR.test.pval, alpha =alpha),
+        rechazo_pval(pval.stadic =Agostino.test.pval, alpha =alpha),
+        rechazo_pval(pval.stadic = bonett.test.pval, alpha = alpha),
+        rechazo_pval(pval.stadic =sh.test.pval, alpha =alpha),
+        rechazo_pval(pval.stadic =Ad.test.pval, alpha =alpha),
+        rechazo_pval(pval.stadic =JB.test.pval, alpha =alpha),
+        rechazo_pval(pval.stadic = skewness.norm.test.pval,alpha = alpha),
+        rechazo_pval(pval.stadic = kurtosis.norm.test.pval,alpha = alpha),
+        rechazo_pval(pval.stadic=chisq.test.pval, alpha=alpha),
+        rechazo_pval(pval.stadic = sf.test.pval,alpha = alpha),
+        rechazo_pval(pval.stadic =BM1BM2.test.pval, alpha = alpha),
+        rechazo_pval(pval.stadic =BH.test.pval, alpha = alpha),
+        rechazo_pval(pval.stadic = DH.test.pval, alpha = alpha),
+        rechazo_pval(pval.stadic = BHBS.test.pval, alpha = alpha),
+        rechazo_pval(pval.stadic = G.test.pval, alpha = alpha))})
+   pow<-rowSums(rejections)/m
+   names(pow)<-c("Ll","Jb.R","DK","BS","Sh.W","A.D","Jb","SK","KS","CHIC","SF","BM1BM2","BH","DH","BHBS","G")
+   return(pow)}
+
+coef.fleishman<-c(-0.119,0.956,0.119,0.0098)#Contaminación Moderado
+n=c(10,20,30,50,100,200,500)
+alpha=c(0.01,0.05,0.10)
+power.norm(m =10000,n,alpha,coef.fleishman, semilla = 127)

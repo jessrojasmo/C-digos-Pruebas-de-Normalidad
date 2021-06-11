@@ -1,3 +1,4 @@
+#---- Anderson-Darling----
 AD.prueba<-function(muestra,max.iter,alfa){
       library(VGAM)
       library(nortest)
